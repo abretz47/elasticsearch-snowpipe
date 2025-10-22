@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  elasticsearch-snowpipe:
+    build: .
+    container_name: es-snowpipe
+    environment:
+      # Elasticsearch Configuration
+      - ES_HOST=${ES_HOST:-localhost}
+      - ES_PORT=${ES_PORT:-9200}
+      - ES_USERNAME=${ES_USERNAME:-elastic}
+      - ES_PASSWORD=${ES_PASSWORD:-changeme}
+      - ES_USE_SSL=${ES_USE_SSL:-true}
+      - ES_VERIFY_CERTS=${ES_VERIFY_CERTS:-true}
+      - ES_INDEXES=${ES_INDEXES:-*}
+      
+      # Snowflake Configuration
+      - SF_ACCOUNT=${SF_ACCOUNT}
+      - SF_USER=${SF_USER}
+      - SF_PASSWORD=${SF_PASSWORD}
+      - SF_DATABASE=${SF_DATABASE:-ES_DATA}
+      - SF_SCHEMA=${SF_SCHEMA:-PUBLIC}
+      - SF_WAREHOUSE=${SF_WAREHOUSE:-COMPUTE_WH}
+      - SF_TABLE_PREFIX=${SF_TABLE_PREFIX:-es_}
+      
+      # Application Configuration
+      - BATCH_SIZE=${BATCH_SIZE:-1000}
+      - SYNC_INTERVAL=${SYNC_INTERVAL:-300}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    
+    # Uncomment to use config file instead of environment variables
+    # volumes:
+    #   - ./config.yml:/config/config.yml
+    # command: ["--config", "/config/config.yml"]
+    
+    restart: unless-stopped
+    
+    # For debugging
+    # command: ["--once"]

@@ -1,0 +1,32 @@
+# Elasticsearch configuration
+elasticsearch:
+  host: localhost
+  port: 9200
+  username: elastic
+  password: changeme
+  use_ssl: true
+  verify_certs: true
+  # ca_certs: /path/to/ca.crt
+  # api_key: your_api_key_here
+  indexes:
+    - logs-*
+    - metrics-*
+    - events-*
+
+# Snowflake configuration
+snowflake:
+  account: your_account.region
+  user: your_username
+  password: your_password
+  # private_key_path: /path/to/private_key.p8
+  # private_key_passphrase: your_passphrase
+  database: ES_DATA
+  schema: PUBLIC
+  warehouse: COMPUTE_WH
+  # role: your_role
+  table_prefix: es_
+
+# Application configuration
+batch_size: 1000
+sync_interval: 300
+log_level: INFO
